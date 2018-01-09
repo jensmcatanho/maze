@@ -6,6 +6,7 @@
 [Bb]uild
 /[Bb]uilds/
 /[Ll]ibrary/
+/UnityPackageManager/
 sysinfo.txt
 *.stackdump
 /Assets/AssetStoreTools*
@@ -17,7 +18,7 @@ sysinfo.txt
 # ===================================== #
 [Ee]xported[Oo]bj/
 .vs/
-.vscode
+.vscode/
 /*.userprefs
 /*.csproj
 /*.pidb
