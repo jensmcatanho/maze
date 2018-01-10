@@ -17,5 +17,6 @@ public class GameManager : MonoBehaviour {
         Rendering.Maze maze = mazeFactory.CreateMaze(gpMaze);
 
 		Instantiate (player, new Vector3 (1.0f * cellSize, 1.0f, 1.0f * cellSize), new Quaternion());
+		Rendering.ASCIIRenderer.Render(gpMaze, "x");
 	}
 }
