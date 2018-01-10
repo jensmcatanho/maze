@@ -10,7 +10,7 @@ public class MazeFactory : MonoBehaviour {
 	public GameObject chestPrefab;
 
 	public Maze CreateMaze(Gameplay.Maze maze) {
-		mazeObject = new Maze ();
+		mazeObject = new Maze(new GameObject("Labyrinth"));
 		CreateFloor(maze);
 		
 		// Create walls in the diagonal part of the maze.
@@ -53,16 +53,17 @@ public class MazeFactory : MonoBehaviour {
 					CreateChest(maze, i, j);
 					mazeObject.NChests++;
 				}
-
 			}
 		}
+
+		CreateFinish(maze);
 
 		return mazeObject;
 	}
 
 	void CreateFloor(Gameplay.Maze maze) {
 		GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
-	//	floor.transform.parent = mazeObject.m_Labyrinth.transform;
+		floor.transform.parent = mazeObject.m_Labyrinth.transform;
 		floor.transform.localScale = new Vector3(maze.Length * 0.2f * maze.cellSize, 1, maze.Width * 0.2f * maze.cellSize);
 		floor.transform.position = new Vector3 (maze.Length * maze.cellSize, 0, maze.Width * maze.cellSize);
 	}
@@ -72,6 +73,7 @@ public class MazeFactory : MonoBehaviour {
 		r.eulerAngles = rotation;
 
 		GameObject wall = Instantiate(wallPrefab, position, r) as GameObject;
+		wall.transform.parent = mazeObject.m_Labyrinth.transform;
 		wall.transform.localScale *= maze.cellSize;
 	}
 
@@ -101,7 +103,17 @@ public class MazeFactory : MonoBehaviour {
 		}
 
 		r.eulerAngles = chestRotation;
-		MonoBehaviour.Instantiate (chestPrefab, chestPosition, r);
+		GameObject chest = Instantiate (chestPrefab, chestPosition, r);
+		chest.transform.parent = mazeObject.m_Labyrinth.transform;
+	}
+
+	public void CreateFinish(Gameplay.Maze maze) {
+		GameObject finishTrigger = new GameObject("FinishTrigger");
+		finishTrigger.AddComponent<FinishPoint>();
+		finishTrigger.AddComponent<BoxCollider>().isTrigger = true;
+		finishTrigger.transform.parent = mazeObject.m_Labyrinth.transform;
+		finishTrigger.transform.position = new Vector3 ((2 * maze.Length - 1) * maze.cellSize, 1.0f, (2 * maze.Width + 2) * maze.cellSize - 2 * maze.cellSize);
+		finishTrigger.transform.localScale = new Vector3(maze.cellSize, maze.cellSize, maze.cellSize * 0.5f);
 	}
 }
 

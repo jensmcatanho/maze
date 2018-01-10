@@ -62,37 +62,78 @@ public class Cell {
 	}
 
 	public void SetWall(Wall target) {
-		/* eg. Setting left wall
-		 * 0
+		/* eg. Setting left wall.
+		 *   0 0 0 0 m_Walls
+		 * | 0 0 0 1 target
+		 * -----------------
+		 *   0 0 0 1 m_Walls
 		 */
 		m_Walls = m_Walls | target;
 	}
 
 	public void UnsetWall(Wall target) {
+		/* eg. Unsetting left wall.
+		 *   1 1 1 1 m_Walls
+		 * & 1 1 1 0 ~target
+		 * -----------------
+		 *   1 1 1 0 m_Walls
+		 */
 		m_Walls = m_Walls & (~target);
 	}
 
 	public void ToggleWall(Wall target) {
+		/* eg. Toggle left wall.
+		 *   0 0 0 1 m_Walls
+		 * ^ 0 0 0 1 target
+		 * -----------------
+		 *   0 0 0 0 m_Walls
+		 */
 		m_Walls = m_Walls ^ target;
 	}
 
 	public bool HasWall(Wall target) {
+		/* eg. Checking if a cell has a left wall.
+		 *   1 1 1 1 m_Walls
+		 * & 0 0 0 1 target
+		 * -----------------
+		 *   0 0 0 1 == target ?
+		 */
 		return (m_Walls & target) == target; 
 	}
 
 	public void SetType(Type target) {
+		/* eg. Set cell as an entrance.
+		 *   0 0 0 m_Type
+		 * | 0 0 1 target
+		 * --------------
+		 *   0 0 1  m_Type
+		 */
 		m_Type = m_Type | target;
 	}
 
 	public void UnsetType(Type target) {
+		/* eg. Unsetting a cell as an entrance.
+		 *   0 0 1 m_Type
+		 * & 1 1 0 ~target
+		 * ---------------
+		 *   0 0 0  m_Type
+		 */
 		m_Type = m_Type & (~target);
 	}
 
 	public void ToggleType(Type target) {
+		/* eg. Toggle a cell as an entrance.
+		 *   0 0 1 m_Type
+		 * ^ 0 0 1 target
+		 * --------------
+		 *   0 0 0 m_Type
+		 */
 		m_Type = m_Type ^ target;
 	}
 
 	public Wall DeadEndOpening() {
+		// Needs to be rewritten.
+		
 		if (!HasWall(Wall.Left)) {
 			return Wall.Left;
 		} else if (!HasWall(Wall.Up)) {

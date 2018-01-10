@@ -8,8 +8,8 @@ public class Maze : MonoBehaviour {
 
 	int m_NChests;
 
-	public Maze() {
-		
+	public Maze(GameObject mazeObject) {
+		m_Labyrinth = mazeObject;
 	}
 
 	public int NChests {

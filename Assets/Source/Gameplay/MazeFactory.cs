@@ -8,8 +8,6 @@ public abstract class MazeFactory {
 	protected float pDeadEnd = 0;
 	protected float pChest = 0;
 
-	// int nChests = 0;
-
 	public Maze CreateMaze(int length, int width, int cellSize) {
 		maze = new Maze (length, width, cellSize);
 
