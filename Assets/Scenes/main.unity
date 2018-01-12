@@ -670,9 +670,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
-  mazeLength: 3
-  mazeWidth: 3
-  cellSize: 1
+  mazeLength: 10
+  mazeWidth: 10
+  cellSize: 2
 --- !u!4 &1965141194
 Transform:
   m_ObjectHideFlags: 0
