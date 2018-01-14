@@ -112,8 +112,15 @@ public class MazeFactory : MonoBehaviour {
 		finishTrigger.AddComponent<FinishPoint>();
 		finishTrigger.AddComponent<BoxCollider>().isTrigger = true;
 		finishTrigger.transform.parent = mazeObject.m_Labyrinth.transform;
-		finishTrigger.transform.position = new Vector3 ((2 * maze.Length - 1) * maze.cellSize, 1.0f, (2 * maze.Width + 2) * maze.cellSize - 2 * maze.cellSize);
-		finishTrigger.transform.localScale = new Vector3(maze.cellSize, maze.cellSize, maze.cellSize * 0.5f);
+
+		if (maze.Exit.Position.x >= maze.Exit.Position.y) {
+			finishTrigger.transform.position = new Vector3 ((2 * maze.Exit.Position.x + 4) * maze.cellSize - 2 * maze.cellSize, 1.0f, (2 * maze.Exit.Position.y + 1) * maze.cellSize);
+			finishTrigger.transform.localScale = new Vector3(.5f * maze.cellSize, 2.0f * maze.cellSize, 1.5f * maze.cellSize);
+
+		} else {
+			finishTrigger.transform.position = new Vector3 ((2 * maze.Exit.Position.x + 1) * maze.cellSize, 1.0f, (2 * maze.Exit.Position.y + 4) * maze.cellSize - 2 * maze.cellSize);
+			finishTrigger.transform.localScale = new Vector3(1.5f * maze.cellSize, 2.0f * maze.cellSize, maze.cellSize * 0.5f);
+		}
 	}
 }
 

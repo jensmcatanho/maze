@@ -38,13 +38,21 @@ public class Cell {
 	Wall m_Walls;
 	Type m_Type;
 
-	public Cell(int size) {
+	Vector2 m_Position;
+
+	public Cell(int x, int y, int size) {
+		m_Position = new Vector2(x, y);
 		m_Size = size;
 
 		SetWall (Wall.Left);
 		SetWall (Wall.Up);
 		SetWall (Wall.Right);
 		SetWall (Wall.Down);
+	}
+
+	public Vector2 Position {
+		get { return m_Position; }
+		set { m_Position = value; }
 	}
 
 	public int Size {
