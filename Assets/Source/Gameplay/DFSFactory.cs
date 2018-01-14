@@ -80,8 +80,16 @@ public class DFSFactory : MazeFactory {
 		maze [0, 0].SetType (Type.Entrance);
 		maze [0, 0].ToggleWall (Wall.Left);
 
-		maze [length - 1, width - 1].SetType (Type.Exit);
-		maze [length - 1, width - 1].ToggleWall (Wall.Right); 
+		Vector2 exitPosition = new Vector2(Random.Range(length * 0.5f, length), Random.Range(width * 0.5f, width));
+		if (exitPosition.x > exitPosition.y) {
+			exitPosition.y = width - 1;
+			maze [(int)exitPosition.x, (int)exitPosition.y].ToggleWall (Wall.Right); 
+		} else {
+			exitPosition.x = length - 1;
+			maze [(int)exitPosition.x, (int)exitPosition.y].ToggleWall (Wall.Down); 
+		}
+
+		maze [(int)exitPosition.x, (int)exitPosition.y].SetType (Type.Exit);
 	}
 
 	protected override void ChestSetup () {
