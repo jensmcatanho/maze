@@ -2,11 +2,17 @@
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
-	public GameObject player;
+	[SerializeField]
+	GameObject player;
 
-	public int mazeLength;
-	public int mazeWidth;
-	public int cellSize;
+	[SerializeField]
+	 int mazeLength;
+
+	[SerializeField]
+	int mazeWidth;
+	
+	[SerializeField]
+	int cellSize;
 
 	Gameplay.MazeFactory dfsFactory = new Gameplay.DFSFactory();
 	Rendering.MazeFactory mazeFactory;
