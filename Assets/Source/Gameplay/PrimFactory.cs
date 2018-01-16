@@ -98,7 +98,7 @@ public class PrimFactory : MazeFactory {
 
 		// 9. Open an entrance and a exit to the maze.
 		maze.Entrance = maze [0, 0];
-		maze.Entrance.SetType(Type.Entrance);
+		maze.Entrance.SetType(Cell.Type.Entrance);
 		maze [0, 0].ToggleWall (Wall.Left);
 
 		Vector2 exitPosition = new Vector2(Random.Range(length * 0.5f, length), Random.Range(width * 0.5f, width));
@@ -111,7 +111,7 @@ public class PrimFactory : MazeFactory {
 		}
 
 		maze.Exit = maze [(int)exitPosition.x, (int)exitPosition.y];
-		maze.Exit.SetType (Type.Exit);
+		maze.Exit.SetType (Cell.Type.Exit);
 	}
 
 	protected override void ChestSetup () {
