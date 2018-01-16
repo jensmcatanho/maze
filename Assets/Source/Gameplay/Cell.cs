@@ -14,13 +14,6 @@ public enum Wall {
 
 }
 
-// Flags if the cell was already visited by an algorithm or if it's nearby a visited cell.
-public enum Status {
-	None     = 0,
-	Visited  = 1,
-	Neighbor = 2
-}
-
 public class Cell {
 	// Flags if the cell is an entrance, an exit or none.
 	[System.Flags]
@@ -34,7 +27,6 @@ public class Cell {
 	int m_Size;
 	bool m_HasChest;
 
-	Status m_Status;
 	Wall m_Walls;
 	Type m_Type;
 
@@ -57,11 +49,6 @@ public class Cell {
 
 	public int Size {
 		get { return m_Size; }
-	}
-
-	public Status Status {
-		get { return m_Status; }
-		set { m_Status = value; }
 	}
 
 	public bool HasChest {

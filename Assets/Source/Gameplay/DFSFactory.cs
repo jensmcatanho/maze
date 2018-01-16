@@ -4,6 +4,20 @@ using System.Collections;
 namespace Gameplay {
 
 public class DFSFactory : MazeFactory {
+	protected Maze<DFSCell> maze;
+
+	public Maze<DFSCell> CreateMaze(int length, int width, int cellSize) {
+		maze = new Maze<DFSCell> (length, width, cellSize);
+
+		for (int row = 0; row < length; row++)
+			for (int col = 0; col < width; col++)
+				maze[row, col] = new DFSCell (row, col, cellSize);
+
+		CreatePath ();
+		CreateChests ();
+
+		return maze;
+	}
 
 	protected override void CreatePath () {
 		ArrayList history = new ArrayList ();
@@ -21,20 +35,20 @@ public class DFSFactory : MazeFactory {
 
 		while (history.Count > 0) {
 			// 3. Mark it as visited.
-			maze[row, col].Status = Status.Visited;
+			maze[row, col].m_Status = DFSCell.Status.Visited;
             
 			// 4. Check which of its neighbors were not yet visited.
 			neighbors.Clear();
-			if (col > 0 && maze [row, col - 1].Status == Status.None)
+			if (col > 0 && maze [row, col - 1].m_Status == DFSCell.Status.None)
 				neighbors.Add ('L');
 
-			if (row > 0 && maze [row - 1, col].Status == Status.None)
+			if (row > 0 && maze [row - 1, col].m_Status == DFSCell.Status.None)
 				neighbors.Add ('U');
 
-			if (col < length - 1 && maze [row, col + 1].Status == Status.None)
+			if (col < length - 1 && maze [row, col + 1].m_Status == DFSCell.Status.None)
 				neighbors.Add ('R');
 
-			if (row < width - 1 && maze [row + 1, col].Status == Status.None)
+			if (row < width - 1 && maze [row + 1, col].m_Status == DFSCell.Status.None)
 				neighbors.Add ('D');
             
 			// 5a. If there is a neighbor not yet visited, choose one randomly to connect to the current cell. 
@@ -114,6 +128,33 @@ public class DFSFactory : MazeFactory {
 		pChest = 0.5f;
 	}
 
+	protected override void CreateChests () {
+		ChestSetup ();
+		
+		for (int row = 0; row < maze.Length; row++)
+			for (int col = 0; col < maze.Width; col++)
+				if (CheckDeadEnd (row, col) && Random.value < pChest)
+					maze [row, col].HasChest = true;
+		
+	}
+
+	protected override bool CheckDeadEnd(int row, int col) {
+		int numWalls = 0;
+
+		if (maze [row, col].HasWall (Wall.Left))
+			numWalls++;
+		
+		if (maze [row, col].HasWall (Wall.Up))
+			numWalls++;
+		
+		if (maze [row, col].HasWall (Wall.Right))
+			numWalls++;
+		
+		if (maze [row, col].HasWall (Wall.Down))
+			numWalls++;
+
+		return numWalls == 3 ? true : false;
+	}
 }
 
 }
