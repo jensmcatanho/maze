@@ -3,13 +3,17 @@
 namespace Gameplay {
 
 public abstract class MazeFactory {
-	protected Maze maze;
+	protected Maze<Cell> maze;
 
 	protected float pDeadEnd = 0;
 	protected float pChest = 0;
 
-	public Maze CreateMaze(int length, int width, int cellSize) {
-		maze = new Maze (length, width, cellSize);
+	public Maze<Cell> CreateMaze(int length, int width, int cellSize) {
+		maze = new Maze<Cell> (length, width, cellSize);
+
+		for (int row = 0; row < length; row++)
+			for (int col = 0; col < width; col++)
+				maze[row, col] = new Cell (row, col, cellSize);
 
 		CreatePath ();
 		CreateChests ();

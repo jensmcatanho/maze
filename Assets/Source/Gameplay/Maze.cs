@@ -1,48 +1,52 @@
 ﻿namespace Gameplay {
 
 [System.Serializable]
-public class Maze {
+public class Maze<T> {
 	int m_Length;
 	int m_Width;
 
-	Cell[,] m_Cells;
+	T[,] m_Cells;
 	int m_CellSize;
 
-	Cell m_Entrance;
-	Cell m_Exit;
+	T m_Entrance;
+	T m_Exit;
 
 	// Maze constructor.
 	public Maze(int length, int width, int cellSize) {
-		InitializeMaze(length, width, cellSize);
+		m_Length = length;
+		m_Width = width;
+		m_Cells = new T[length, width];
+		m_CellSize = cellSize;
+	//	InitializeMaze(length, width, cellSize);
 	}
 
 	// Helper function to initialize the matrix.
 	void InitializeMaze(int length, int width, int cellSize) {
-		m_Length = length;
-		m_Width = width;
-            
-		m_Cells = new Cell[length, width];
-		m_CellSize = cellSize;
+//		m_Length = length;
+//		m_Width = width;
+//          
+//		m_Cells = new T[length, width];
+//		m_CellSize = cellSize;
 
-		for (int row = 0; row < length; row++)
-			for (int col = 0; col < width; col++)
-				m_Cells [row, col] = new Cell (row, col, cellSize);
+//		for (int row = 0; row < length; row++)
+//			for (int col = 0; col < width; col++)
+//				m_Cells [row, col] = new T (row, col, cellSize);
 	}
 
 	// Indexer for the cells in the maze.
-	public Cell this[int row, int col] {
+	public T this[int row, int col] {
 		get { return m_Cells [row, col]; }
 
 		set { m_Cells[row, col] = value; }
 	}
 
-	public Cell Entrance {
+	public T Entrance {
 		get { return m_Entrance; }
 
 		set { m_Entrance = value; }
 	}
 
-	public Cell Exit {
+	public T Exit {
 		get { return m_Exit; }
 
 		set { m_Exit = value; }
@@ -51,7 +55,7 @@ public class Maze {
 	// Read-only accessors to the maze properties.
 	public int Length { get { return m_Length; } }
 	public int Width { get { return m_Width; } }
-	public int cellSize { get { return m_Cells[0, 0].Size; } }
+	public int CellSize { get { return m_CellSize; } }
 
 }
 

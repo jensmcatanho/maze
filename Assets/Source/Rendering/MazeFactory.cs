@@ -9,33 +9,33 @@ public class MazeFactory : MonoBehaviour {
 	public GameObject wallPrefab;
 	public GameObject chestPrefab;
 
-	public Maze CreateMaze(Gameplay.Maze maze) {
+	public Maze CreateMaze(Gameplay.Maze<Gameplay.Cell> maze) {
 		mazeObject = new Maze(new GameObject("Labyrinth"));
 		CreateFloor(maze);
 		
 		// Create walls in the diagonal part of the maze.
 		for (int i = 0; i < maze.Length; i++) {
 			if (maze[i, i].HasWall(Gameplay.Wall.Left))
-				CreateWall(maze, new Vector3 ((2 * i + 1) * maze.cellSize, 2.0f, 2 * i * maze.cellSize), new Vector3 (90.0f, 90.0f, 0.0f));
+				CreateWall(maze, new Vector3 ((2 * i + 1) * maze.CellSize, 2.0f, 2 * i * maze.CellSize), new Vector3 (90.0f, 90.0f, 0.0f));
 
 			if (maze[i, i].HasWall(Gameplay.Wall.Down))
-				CreateWall (maze, new Vector3 ((2 * i + 2) * maze.cellSize, 2.0f, (2 * i + 1) * maze.cellSize), new Vector3 (90.0f, 0.0f, 0.0f));
+				CreateWall (maze, new Vector3 ((2 * i + 2) * maze.CellSize, 2.0f, (2 * i + 1) * maze.CellSize), new Vector3 (90.0f, 0.0f, 0.0f));
 
 			if (maze [i, i].HasWall(Gameplay.Wall.Up))
-				CreateWall (maze, new Vector3 (2 * i * maze.cellSize, 2.0f, (2 * i + 1) * maze.cellSize), new Vector3 (90.0f, 0.0f, 180.0f));
+				CreateWall (maze, new Vector3 (2 * i * maze.CellSize, 2.0f, (2 * i + 1) * maze.CellSize), new Vector3 (90.0f, 0.0f, 180.0f));
 
 			if (maze [i, i].HasWall(Gameplay.Wall.Right))
-				CreateWall (maze, new Vector3 ((2 * i + 1) * maze.cellSize, 2.0f, (2 * i + 2) * maze.cellSize), new Vector3 (90.0f, -90.0f, 0.0f));
+				CreateWall (maze, new Vector3 ((2 * i + 1) * maze.CellSize, 2.0f, (2 * i + 2) * maze.CellSize), new Vector3 (90.0f, -90.0f, 0.0f));
 		}
 
 		for (int i = 0; i < maze.Length; i++) {
 			for (int j = i + 1; j < maze.Width; j++) {
 				// Create walls and chests in the lower triangular part of the maze.
 				if (maze[j, i].HasWall(Gameplay.Wall.Left))
-					CreateWall(maze, new Vector3 ((2 * j + 1) * maze.cellSize, 2.0f, 2 * i * maze.cellSize), new Vector3(90.0f, 90.0f, 0.0f));
+					CreateWall(maze, new Vector3 ((2 * j + 1) * maze.CellSize, 2.0f, 2 * i * maze.CellSize), new Vector3(90.0f, 90.0f, 0.0f));
 
 				if (maze[j, i].HasWall(Gameplay.Wall.Down))
-					CreateWall (maze, new Vector3((2 * j + 2) * maze.cellSize, 2.0f, (2 * i + 1) * maze.cellSize), new Vector3(90.0f, 0.0f, 0.0f));
+					CreateWall (maze, new Vector3((2 * j + 2) * maze.CellSize, 2.0f, (2 * i + 1) * maze.CellSize), new Vector3(90.0f, 0.0f, 0.0f));
 
 				if (maze[j, i].HasChest) {
 					CreateChest(maze, j, i);
@@ -44,10 +44,10 @@ public class MazeFactory : MonoBehaviour {
 				
 				// Create walls in the upper triangular part of the maze.
 				if (maze [i, j].HasWall(Gameplay.Wall.Up))
-					CreateWall (maze, new Vector3(2 * i * maze.cellSize, 2.0f, (2 * j + 1) * maze.cellSize), new Vector3(90.0f, 0.0f, 180.0f));
+					CreateWall (maze, new Vector3(2 * i * maze.CellSize, 2.0f, (2 * j + 1) * maze.CellSize), new Vector3(90.0f, 0.0f, 180.0f));
 
 				if (maze [i, j].HasWall(Gameplay.Wall.Right))
-					CreateWall (maze, new Vector3((2 * i + 1) * maze.cellSize, 2.0f, (2 * j + 2) * maze.cellSize), new Vector3(90.0f, -90.0f, 0.0f));
+					CreateWall (maze, new Vector3((2 * i + 1) * maze.CellSize, 2.0f, (2 * j + 2) * maze.CellSize), new Vector3(90.0f, -90.0f, 0.0f));
 
 				if (maze[i, j].HasChest) {
 					CreateChest(maze, i, j);
@@ -61,25 +61,25 @@ public class MazeFactory : MonoBehaviour {
 		return mazeObject;
 	}
 
-	void CreateFloor(Gameplay.Maze maze) {
+	void CreateFloor(Gameplay.Maze<Gameplay.Cell> maze) {
 		GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
 		floor.transform.parent = mazeObject.m_Labyrinth.transform;
-		floor.transform.localScale = new Vector3(maze.Length * 0.2f * maze.cellSize, 1, maze.Width * 0.2f * maze.cellSize);
-		floor.transform.position = new Vector3 (maze.Length * maze.cellSize, 0, maze.Width * maze.cellSize);
+		floor.transform.localScale = new Vector3(maze.Length * 0.2f * maze.CellSize, 1, maze.Width * 0.2f * maze.CellSize);
+		floor.transform.position = new Vector3 (maze.Length * maze.CellSize, 0, maze.Width * maze.CellSize);
 	}
 
-	void CreateWall(Gameplay.Maze maze, Vector3 position, Vector3 rotation) {
+	void CreateWall(Gameplay.Maze<Gameplay.Cell> maze, Vector3 position, Vector3 rotation) {
 		Quaternion r = Quaternion.identity;
 		r.eulerAngles = rotation;
 
 		GameObject wall = Instantiate(wallPrefab, position, r) as GameObject;
 		wall.transform.parent = mazeObject.m_Labyrinth.transform;
-		wall.transform.localScale *= maze.cellSize;
+		wall.transform.localScale *= maze.CellSize;
 	}
 
-	public void CreateChest(Gameplay.Maze maze, int row, int col) {
+	public void CreateChest(Gameplay.Maze<Gameplay.Cell> maze, int row, int col) {
 		Quaternion r = Quaternion.identity;
-		Vector3 chestPosition = new Vector3 ((2 * row + 1) * maze.cellSize, 0.0f, (2 * col + 1) * maze.cellSize);
+		Vector3 chestPosition = new Vector3 ((2 * row + 1) * maze.CellSize, 0.0f, (2 * col + 1) * maze.CellSize);
 		Vector3 chestRotation = new Vector3();
 
 		// Check which direction the chest is facing (which direction of the cell is open).
@@ -107,19 +107,19 @@ public class MazeFactory : MonoBehaviour {
 		chest.transform.parent = mazeObject.m_Labyrinth.transform;
 	}
 
-	public void CreateFinish(Gameplay.Maze maze) {
+	public void CreateFinish(Gameplay.Maze<Gameplay.Cell> maze) {
 		GameObject finishTrigger = new GameObject("FinishTrigger");
 		finishTrigger.AddComponent<FinishPoint>();
 		finishTrigger.AddComponent<BoxCollider>().isTrigger = true;
 		finishTrigger.transform.parent = mazeObject.m_Labyrinth.transform;
 
 		if (maze.Exit.Position.x >= maze.Exit.Position.y) {
-			finishTrigger.transform.position = new Vector3 ((2 * maze.Exit.Position.x + 4) * maze.cellSize - 2 * maze.cellSize, 1.0f, (2 * maze.Exit.Position.y + 1) * maze.cellSize);
-			finishTrigger.transform.localScale = new Vector3(.5f * maze.cellSize, 2.0f * maze.cellSize, 1.5f * maze.cellSize);
+			finishTrigger.transform.position = new Vector3 ((2 * maze.Exit.Position.x + 4) * maze.CellSize - 2 * maze.CellSize, 1.0f, (2 * maze.Exit.Position.y + 1) * maze.CellSize);
+			finishTrigger.transform.localScale = new Vector3(.5f * maze.CellSize, 2.0f * maze.CellSize, 1.5f * maze.CellSize);
 
 		} else {
-			finishTrigger.transform.position = new Vector3 ((2 * maze.Exit.Position.x + 1) * maze.cellSize, 1.0f, (2 * maze.Exit.Position.y + 4) * maze.cellSize - 2 * maze.cellSize);
-			finishTrigger.transform.localScale = new Vector3(1.5f * maze.cellSize, 2.0f * maze.cellSize, maze.cellSize * 0.5f);
+			finishTrigger.transform.position = new Vector3 ((2 * maze.Exit.Position.x + 1) * maze.CellSize, 1.0f, (2 * maze.Exit.Position.y + 4) * maze.CellSize - 2 * maze.CellSize);
+			finishTrigger.transform.localScale = new Vector3(1.5f * maze.CellSize, 2.0f * maze.CellSize, maze.CellSize * 0.5f);
 		}
 	}
 }
