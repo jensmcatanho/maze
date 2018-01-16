@@ -17,20 +17,6 @@ public class Maze<T> {
 		m_Width = width;
 		m_Cells = new T[length, width];
 		m_CellSize = cellSize;
-	//	InitializeMaze(length, width, cellSize);
-	}
-
-	// Helper function to initialize the matrix.
-	void InitializeMaze(int length, int width, int cellSize) {
-//		m_Length = length;
-//		m_Width = width;
-//          
-//		m_Cells = new T[length, width];
-//		m_CellSize = cellSize;
-
-//		for (int row = 0; row < length; row++)
-//			for (int col = 0; col < width; col++)
-//				m_Cells [row, col] = new T (row, col, cellSize);
 	}
 
 	// Indexer for the cells in the maze.

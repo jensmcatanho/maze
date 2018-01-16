@@ -4,6 +4,7 @@ using System.Collections;
 namespace Gameplay {
 
 public class PrimFactory : MazeFactory {
+	protected Maze<PrimCell> maze;
 
 	protected override void CreatePath () {
 		System.Diagnostics.Debug.Assert(!maze[0, 0].HasWall(Wall.None));
@@ -19,28 +20,28 @@ public class PrimFactory : MazeFactory {
 		int col = Random.Range (0, width);
 
 		// 2. Mark it as visited.
-		maze[row, col].Status = Status.Visited;
+		maze[row, col].m_Status = PrimCell.Status.Visited;
 
 		do {
 			// 3. Add its neighbors to the frontier list and mark them as part of the frontier.
-			if (col > 0 && maze [row, col - 1].Status == Status.None) {
+			if (col > 0 && maze [row, col - 1].m_Status == PrimCell.Status.None) {
 				frontier.Add (new Vector2 (row, col - 1)); // Left
-				maze [row, col - 1].Status = Status.Neighbor;
+				maze [row, col - 1].m_Status = PrimCell.Status.Neighbor;
 			}
 
-			if (row > 0 && maze [row - 1, col]. Status == Status.None) {
+			if (row > 0 && maze [row - 1, col].m_Status == PrimCell.Status.None) {
 				frontier.Add (new Vector2 (row - 1, col)); // Up
-				maze [row - 1, col].Status = Status.Neighbor;
+				maze [row - 1, col].m_Status = PrimCell.Status.Neighbor;
 			}
 
-			if (col < length - 1 && maze [row, col + 1].Status == Status.None) {
+			if (col < length - 1 && maze [row, col + 1].m_Status == PrimCell.Status.None) {
 				frontier.Add (new Vector2 (row, col + 1)); // Right
-				maze [row, col + 1].Status = Status.Neighbor;
+				maze [row, col + 1].m_Status = PrimCell.Status.Neighbor;
 			}
 
-			if (row < width - 1 && maze [row + 1, col].Status == Status.None) {
+			if (row < width - 1 && maze [row + 1, col].m_Status == PrimCell.Status.None) {
 				frontier.Add (new Vector2 (row + 1, col)); // Down
-				maze [row + 1, col].Status = Status.Neighbor;
+				maze [row + 1, col].m_Status = PrimCell.Status.Neighbor;
 			}
 
 			// 4. Pick a cell in the frontier list randomly.
@@ -50,21 +51,21 @@ public class PrimFactory : MazeFactory {
 
 			// 5. Mark it as visited and remove it from the frontier list.
 			frontier.Remove (nextCell);
-			maze[row, col].Status = Status.Visited;
+			maze[row, col].m_Status = PrimCell.Status.Visited;
 
 			// 6. Check which of its neighbors were already visited.
 			neighbors.Clear();
 
-			if (col > 0 && maze [row, col - 1].Status == Status.Visited)
+			if (col > 0 && maze [row, col - 1].m_Status == PrimCell.Status.Visited)
 				neighbors.Add('L');
 
-			if (row > 0 && maze [row - 1, col].Status == Status.Visited)
+			if (row > 0 && maze [row - 1, col].m_Status == PrimCell.Status.Visited)
 				neighbors.Add('U');
 
-			if (col < length - 1 && maze [row, col + 1].Status == Status.Visited)
+			if (col < length - 1 && maze [row, col + 1].m_Status == PrimCell.Status.Visited)
 				neighbors.Add('R');
 
-			if (row < width - 1 && maze [row + 1, col].Status == Status.Visited)
+			if (row < width - 1 && maze [row + 1, col].m_Status == PrimCell.Status.Visited)
 				neighbors.Add('D');
 
 			// 7. Randomly choose a neighbor to connect to the current cell.
@@ -132,6 +133,34 @@ public class PrimFactory : MazeFactory {
 		// pChest = 0.05 / pDeadEnd
 		pDeadEnd = 0.36f;
 		pChest = 0.14f;
+	}
+
+	protected override void CreateChests () {
+		ChestSetup ();
+		
+		for (int row = 0; row < maze.Length; row++)
+			for (int col = 0; col < maze.Width; col++)
+				if (CheckDeadEnd (row, col) && Random.value < pChest)
+					maze [row, col].HasChest = true;
+		
+	}
+
+	protected override bool CheckDeadEnd(int row, int col) {
+		int numWalls = 0;
+
+		if (maze [row, col].HasWall (Wall.Left))
+			numWalls++;
+		
+		if (maze [row, col].HasWall (Wall.Up))
+			numWalls++;
+		
+		if (maze [row, col].HasWall (Wall.Right))
+			numWalls++;
+		
+		if (maze [row, col].HasWall (Wall.Down))
+			numWalls++;
+
+		return numWalls == 3 ? true : false;
 	}
 
 }

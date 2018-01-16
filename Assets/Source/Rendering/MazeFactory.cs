@@ -9,7 +9,7 @@ public class MazeFactory : MonoBehaviour {
 	public GameObject wallPrefab;
 	public GameObject chestPrefab;
 
-	public Maze CreateMaze(Gameplay.Maze<Gameplay.Cell> maze) {
+	public Maze CreateMaze(Gameplay.Maze<Gameplay.DFSCell> maze) {
 		mazeObject = new Maze(new GameObject("Labyrinth"));
 		CreateFloor(maze);
 		
@@ -61,14 +61,14 @@ public class MazeFactory : MonoBehaviour {
 		return mazeObject;
 	}
 
-	void CreateFloor(Gameplay.Maze<Gameplay.Cell> maze) {
+	void CreateFloor(Gameplay.Maze<Gameplay.DFSCell> maze) {
 		GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
 		floor.transform.parent = mazeObject.m_Labyrinth.transform;
 		floor.transform.localScale = new Vector3(maze.Length * 0.2f * maze.CellSize, 1, maze.Width * 0.2f * maze.CellSize);
 		floor.transform.position = new Vector3 (maze.Length * maze.CellSize, 0, maze.Width * maze.CellSize);
 	}
 
-	void CreateWall(Gameplay.Maze<Gameplay.Cell> maze, Vector3 position, Vector3 rotation) {
+	void CreateWall(Gameplay.Maze<Gameplay.DFSCell> maze, Vector3 position, Vector3 rotation) {
 		Quaternion r = Quaternion.identity;
 		r.eulerAngles = rotation;
 
@@ -77,7 +77,7 @@ public class MazeFactory : MonoBehaviour {
 		wall.transform.localScale *= maze.CellSize;
 	}
 
-	public void CreateChest(Gameplay.Maze<Gameplay.Cell> maze, int row, int col) {
+	public void CreateChest(Gameplay.Maze<Gameplay.DFSCell> maze, int row, int col) {
 		Quaternion r = Quaternion.identity;
 		Vector3 chestPosition = new Vector3 ((2 * row + 1) * maze.CellSize, 0.0f, (2 * col + 1) * maze.CellSize);
 		Vector3 chestRotation = new Vector3();
@@ -107,7 +107,7 @@ public class MazeFactory : MonoBehaviour {
 		chest.transform.parent = mazeObject.m_Labyrinth.transform;
 	}
 
-	public void CreateFinish(Gameplay.Maze<Gameplay.Cell> maze) {
+	public void CreateFinish(Gameplay.Maze<Gameplay.DFSCell> maze) {
 		GameObject finishTrigger = new GameObject("FinishTrigger");
 		finishTrigger.AddComponent<FinishPoint>();
 		finishTrigger.AddComponent<BoxCollider>().isTrigger = true;

@@ -4,7 +4,7 @@ using System.IO;
 namespace Rendering {
 
 public class ASCIIRenderer {
-	static public void Render(Gameplay.Maze<Gameplay.Cell> maze, string display) {
+	static public void Render(Gameplay.Maze<Gameplay.DFSCell> maze, string display) {
 		string [,]asciiMaze = new string[2 * maze.Length + 1, 2 * maze.Width + 1];
 
 		for (int i = 0; i <= 2 * maze.Length; i++) {
