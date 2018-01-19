@@ -14,7 +14,7 @@ public enum Wall {
 
 }
 
-public class Cell {
+public abstract class Cell {
 	// Flags if the cell is an entrance, an exit or none.
 	[System.Flags]
 	public enum Type {
