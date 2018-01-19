@@ -9,8 +9,13 @@ public class MazeFactory : MonoBehaviour {
 	public GameObject wallPrefab;
 	public GameObject chestPrefab;
 
-	public Maze CreateMaze(Gameplay.Maze<Gameplay.DFSCell> maze) {
+	void Awake() {
+		EventManager.Instance.AddListener<Gameplay.Events.MazeReady<Gameplay.DFSCell>>(CreateMaze);
+	}
+
+	public void CreateMaze(Gameplay.Events.MazeReady<Gameplay.DFSCell> e) {
 		mazeObject = new Maze(new GameObject("Labyrinth"));
+		Gameplay.Maze<Gameplay.DFSCell> maze = e.maze;
 		CreateFloor(maze);
 		
 		// Create walls in the diagonal part of the maze.
@@ -57,8 +62,6 @@ public class MazeFactory : MonoBehaviour {
 		}
 
 		CreateFinish(maze);
-
-		return mazeObject;
 	}
 
 	void CreateFloor(Gameplay.Maze<Gameplay.DFSCell> maze) {
