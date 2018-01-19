@@ -2,18 +2,22 @@
 
 namespace Rendering {
 
-public class MazeFactory : MonoBehaviour {
+public class MazeFactory : MonoBehaviour, IEventListener {
 	protected Maze mazeObject;
 
 	// Prefabs
 	public GameObject wallPrefab;
 	public GameObject chestPrefab;
 
-	void Awake() {
+	public void CreateListeners() {
 		EventManager.Instance.AddListener<Gameplay.Events.MazeReady<Gameplay.DFSCell>>(CreateMaze);
 	}
 
-	public void CreateMaze(Gameplay.Events.MazeReady<Gameplay.DFSCell> e) {
+	void Awake() {
+		CreateListeners();
+	}
+
+	void CreateMaze(Gameplay.Events.MazeReady<Gameplay.DFSCell> e) {
 		mazeObject = new Maze(new GameObject("Labyrinth"));
 		Gameplay.Maze<Gameplay.DFSCell> maze = e.maze;
 		CreateFloor(maze);
@@ -80,7 +84,7 @@ public class MazeFactory : MonoBehaviour {
 		wall.transform.localScale *= maze.CellSize;
 	}
 
-	public void CreateChest(Gameplay.Maze<Gameplay.DFSCell> maze, int row, int col) {
+	void CreateChest(Gameplay.Maze<Gameplay.DFSCell> maze, int row, int col) {
 		Quaternion r = Quaternion.identity;
 		Vector3 chestPosition = new Vector3 ((2 * row + 1) * maze.CellSize, 0.0f, (2 * col + 1) * maze.CellSize);
 		Vector3 chestRotation = new Vector3();
@@ -110,7 +114,7 @@ public class MazeFactory : MonoBehaviour {
 		chest.transform.parent = mazeObject.m_Labyrinth.transform;
 	}
 
-	public void CreateFinish(Gameplay.Maze<Gameplay.DFSCell> maze) {
+	void CreateFinish(Gameplay.Maze<Gameplay.DFSCell> maze) {
 		GameObject finishTrigger = new GameObject("FinishTrigger");
 		finishTrigger.AddComponent<FinishPoint>();
 		finishTrigger.AddComponent<BoxCollider>().isTrigger = true;
