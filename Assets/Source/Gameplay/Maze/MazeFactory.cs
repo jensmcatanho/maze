@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Gameplay {
+﻿namespace Gameplay {
 
 public abstract class MazeFactory {
 	protected float pDeadEnd = 0;

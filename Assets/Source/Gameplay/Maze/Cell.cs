@@ -24,13 +24,15 @@ public abstract class Cell {
 
 	}
 
-	int m_Size;
-	bool m_HasChest;
-
-	Wall m_Walls;
 	Type m_Type;
 
+	Wall m_Walls;
+
 	Vector2 m_Position;
+
+	int m_Size;
+
+	bool m_HasChest;
 
 	public Cell(int x, int y, int size) {
 		m_Position = new Vector2(x, y);

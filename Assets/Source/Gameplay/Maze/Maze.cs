@@ -11,7 +11,6 @@ public class Maze<T> {
 	T m_Entrance;
 	T m_Exit;
 
-	// Maze constructor.
 	public Maze(int length, int width, int cellSize) {
 		m_Length = length;
 		m_Width = width;
@@ -19,22 +18,18 @@ public class Maze<T> {
 		m_CellSize = cellSize;
 	}
 
-	// Indexer for the cells in the maze.
 	public T this[int row, int col] {
 		get { return m_Cells [row, col]; }
-
 		set { m_Cells[row, col] = value; }
 	}
 
 	public T Entrance {
 		get { return m_Entrance; }
-
 		set { m_Entrance = value; }
 	}
 
 	public T Exit {
 		get { return m_Exit; }
-
 		set { m_Exit = value; }
 	}
 
