@@ -16,7 +16,7 @@ public class DFSFactory : MazeFactory {
 		CreatePath ();
 		CreateChests ();
 
-		EventManager.Instance.QueueEvent(new Events.MazeReady<DFSCell>(maze));
+		Core.EventManager.Instance.QueueEvent(new Events.MazeReady<DFSCell>(maze));
 		return maze;
 	}
 

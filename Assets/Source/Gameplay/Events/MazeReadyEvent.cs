@@ -3,7 +3,7 @@ namespace Gameplay {
 
 namespace Events {
 
-public class MazeReady<T> : GameEvent {
+public class MazeReady<T> : Core.Events.GameEvent {
     public Maze<T> maze {
         get;
         private set;

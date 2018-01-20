@@ -1,3 +1,5 @@
+namespace Core {
+
 namespace Events {
 
 public class CreateNewMaze : GameEvent {
@@ -15,6 +17,8 @@ public class CreateNewMaze : GameEvent {
         mazeWidth = mWidth;
         cellSize = cSize;
     }
+}
+
 }
 
 }

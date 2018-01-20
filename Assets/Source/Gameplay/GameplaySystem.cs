@@ -2,18 +2,15 @@ using UnityEngine;
 
 namespace Gameplay {
 
-public class GameplaySystem : MonoBehaviour, IEventListener {
+public class GameplaySystem : MonoBehaviour, Core.IEventListener {
     static GameplaySystem s_Instance = null;
 
-    DFSFactory mazeFactory;
-
     public void CreateListeners() {
-		EventManager.Instance.AddListener<global::Events.CreateNewMaze>(CreateMaze);
+		Core.EventManager.Instance.AddListener<Core.Events.CreateNewMaze>(CreateMaze);
     }
 
     void Awake() {
         CreateListeners();
-        s_Instance = null;
     }
 
     public static GameplaySystem Instance {
@@ -25,17 +22,17 @@ public class GameplaySystem : MonoBehaviour, IEventListener {
         }
     }
 
-    void CreateMaze(global::Events.CreateNewMaze e) {
+    public void CreateMaze(Core.Events.CreateNewMaze e) {
         switch (e.mazeType) {
-            case MazeType.DFS:
-                mazeFactory = new DFSFactory();
+            case Core.MazeType.DFS:
+                DFSFactory dfsFactory = new DFSFactory();
+                dfsFactory.CreateMaze(e.mazeLength, e.mazeWidth, e.cellSize);
                 break;
-            case MazeType.Prim:
-                //mazeFactory = new PrimFactory();
+            case Core.MazeType.Prim:
+                PrimFactory primFactory = new PrimFactory();
+                primFactory.CreateMaze(e.mazeLength, e.mazeWidth, e.cellSize);
                 break;
         }
-
-        mazeFactory.CreateMaze(e.mazeLength, e.mazeWidth, e.cellSize);
     }
 }
 
