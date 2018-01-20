@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Rendering {
 
-public class ASCIIRenderer {
+public class ASCIIFactory {
 	static public void Render(Gameplay.Maze<Gameplay.DFSCell> maze, string display) {
 		string [,]asciiMaze = new string[2 * maze.Length + 1, 2 * maze.Width + 1];
 
