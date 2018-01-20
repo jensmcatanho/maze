@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace Rendering {
 
-public class RenderingSystem : MonoBehaviour, IEventListener {
+public class RenderingSystem : MonoBehaviour, Core.IEventListener {
     static RenderingSystem s_Instance = null;
 
     MazeFactory mazeFactory;
 
     public void CreateListeners() {
-		EventManager.Instance.AddListener<Gameplay.Events.MazeReady<Gameplay.DFSCell>>(CreateMaze);
+		Core.EventManager.Instance.AddListener<Gameplay.Events.MazeReady<Gameplay.DFSCell>>(CreateMaze);
     }
 
     void Awake() {

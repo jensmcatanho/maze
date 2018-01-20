@@ -3,14 +3,16 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace Core {
+
 public class EventManager : MonoBehaviour {
     public bool LimitQueueProcesing = false;
     public float QueueProcessTime = 0.0f;
     private static EventManager s_Instance = null;
     private Queue m_eventQueue = new Queue();
 
-    public delegate void EventDelegate<T> (T e) where T : GameEvent;
-    private delegate void EventDelegate (GameEvent e);
+    public delegate void EventDelegate<T> (T e) where T : Events.GameEvent;
+    private delegate void EventDelegate (Events.GameEvent e);
 
     private Dictionary<System.Type, EventDelegate> delegates = new Dictionary<System.Type, EventDelegate>();
     private Dictionary<System.Delegate, EventDelegate> delegateLookup = new Dictionary<System.Delegate, EventDelegate>();
@@ -26,7 +28,7 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    private EventDelegate AddDelegate<T>(EventDelegate<T> del) where T : GameEvent {
+    private EventDelegate AddDelegate<T>(EventDelegate<T> del) where T : Events.GameEvent {
         // Early-out if we've already registered this delegate
         if (delegateLookup.ContainsKey(del))
             return null;
@@ -46,11 +48,11 @@ public class EventManager : MonoBehaviour {
         return internalDelegate;
     }
 
-    public void AddListener<T> (EventDelegate<T> del) where T : GameEvent {
+    public void AddListener<T> (EventDelegate<T> del) where T : Events.GameEvent {
         AddDelegate<T>(del);
     }
 
-    public void AddListenerOnce<T> (EventDelegate<T> del) where T : GameEvent {
+    public void AddListenerOnce<T> (EventDelegate<T> del) where T : Events.GameEvent {
         EventDelegate result = AddDelegate<T>(del);
 
         if(result != null){
@@ -59,7 +61,7 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    public void RemoveListener<T> (EventDelegate<T> del) where T : GameEvent {
+    public void RemoveListener<T> (EventDelegate<T> del) where T : Events.GameEvent {
         EventDelegate internalDelegate;
         if (delegateLookup.TryGetValue(del, out internalDelegate)) {
             EventDelegate tempDel;
@@ -82,11 +84,11 @@ public class EventManager : MonoBehaviour {
         onceLookups.Clear();
     }
 
-    public bool HasListener<T> (EventDelegate<T> del) where T : GameEvent {
+    public bool HasListener<T> (EventDelegate<T> del) where T : Events.GameEvent {
         return delegateLookup.ContainsKey(del);
     }
 
-    public void TriggerEvent (GameEvent e) {
+    public void TriggerEvent (Events.GameEvent e) {
         EventDelegate del;
         if (delegates.TryGetValue(e.GetType(), out del)) {
             del.Invoke(e);
@@ -111,7 +113,7 @@ public class EventManager : MonoBehaviour {
     }
 
     //Inserts the event into the current queue.
-    public bool QueueEvent(GameEvent evt) {
+    public bool QueueEvent(Events.GameEvent evt) {
         if (!delegates.ContainsKey(evt.GetType())) {
             Debug.LogWarning("EventManager: QueueEvent failed due to no listeners for event: " + evt.GetType());
             return false;
@@ -132,7 +134,7 @@ public class EventManager : MonoBehaviour {
                     return;
             }
 
-            GameEvent evt = m_eventQueue.Dequeue() as GameEvent;
+            Events.GameEvent evt = m_eventQueue.Dequeue() as Events.GameEvent;
             TriggerEvent(evt);
 
             if (LimitQueueProcesing)
@@ -145,4 +147,6 @@ public class EventManager : MonoBehaviour {
         m_eventQueue.Clear();
         s_Instance = null;
     }
+}
+
 }

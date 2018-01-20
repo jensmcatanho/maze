@@ -57,7 +57,7 @@ public class MazeFactory : MonoBehaviour {
 		}
 
 		CreateFinish(maze);
-		EventManager.Instance.QueueEvent(new Events.MazeReady(mazeObject));
+		Core.EventManager.Instance.QueueEvent(new Events.MazeReady(mazeObject));
 	}
 
 	void CreateFloor(Gameplay.Maze<Gameplay.DFSCell> maze) {

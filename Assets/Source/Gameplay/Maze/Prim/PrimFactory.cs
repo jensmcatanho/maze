@@ -16,7 +16,7 @@ public class PrimFactory : MazeFactory {
 		CreatePath ();
 		CreateChests ();
 
-		EventManager.Instance.QueueEvent(new Events.MazeReady<PrimCell>(maze));
+		Core.EventManager.Instance.QueueEvent(new Events.MazeReady<PrimCell>(maze));
 		return maze;
 	}
 
