@@ -6,6 +6,20 @@ namespace Gameplay {
 public class PrimFactory : MazeFactory {
 	protected Maze<PrimCell> maze;
 
+	public Maze<PrimCell> CreateMaze(int length, int width, int cellSize) {
+		maze = new Maze<PrimCell> (length, width, cellSize);
+
+		for (int row = 0; row < length; row++)
+			for (int col = 0; col < width; col++)
+				maze[row, col] = new PrimCell (row, col, cellSize);
+
+		CreatePath ();
+		CreateChests ();
+
+		EventManager.Instance.QueueEvent(new Events.MazeReady<PrimCell>(maze));
+		return maze;
+	}
+
 	protected override void CreatePath () {
 		System.Diagnostics.Debug.Assert(!maze[0, 0].HasWall(Wall.None));
 
