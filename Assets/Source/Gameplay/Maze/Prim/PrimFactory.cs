@@ -6,7 +6,7 @@ namespace Gameplay {
 public class PrimFactory : MazeFactory {
 	protected Maze<PrimCell> maze;
 
-	public Maze<PrimCell> CreateMaze(int length, int width, int cellSize) {
+	public override void CreateMaze(int length, int width, int cellSize) {
 		maze = new Maze<PrimCell> (length, width, cellSize);
 
 		for (int row = 0; row < length; row++)
@@ -17,7 +17,6 @@ public class PrimFactory : MazeFactory {
 		CreateChests ();
 
 		Core.EventManager.Instance.QueueEvent(new Events.MazeReady<PrimCell>(maze));
-		return maze;
 	}
 
 	protected override void CreatePath () {

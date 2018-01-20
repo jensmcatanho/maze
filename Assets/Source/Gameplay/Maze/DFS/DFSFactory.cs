@@ -6,7 +6,7 @@ namespace Gameplay {
 public class DFSFactory : MazeFactory {
 	protected Maze<DFSCell> maze;
 
-	public Maze<DFSCell> CreateMaze(int length, int width, int cellSize) {
+	public override void CreateMaze(int length, int width, int cellSize) {
 		maze = new Maze<DFSCell> (length, width, cellSize);
 
 		for (int row = 0; row < length; row++)
@@ -17,7 +17,6 @@ public class DFSFactory : MazeFactory {
 		CreateChests ();
 
 		Core.EventManager.Instance.QueueEvent(new Events.MazeReady<DFSCell>(maze));
-		return maze;
 	}
 
 	protected override void CreatePath () {
