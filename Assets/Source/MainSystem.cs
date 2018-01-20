@@ -28,6 +28,7 @@ public class MainSystem : MonoBehaviour, IEventListener {
 	// Subsystems
 	EventManager eventManager;
 	Gameplay.GameplaySystem gameplaySystem;
+	Rendering.RenderingSystem renderingSystem;
 
 	public void CreateListeners() {
 		eventManager.AddListener<Rendering.Events.MazeReady>(CreatePlayer);
@@ -36,6 +37,7 @@ public class MainSystem : MonoBehaviour, IEventListener {
 	void Awake() {
 		// Subsystems
 		gameplaySystem = Gameplay.GameplaySystem.Instance;
+		renderingSystem = Rendering.RenderingSystem.Instance;
 		eventManager = EventManager.Instance;
 
 		CreateListeners();

@@ -2,24 +2,15 @@
 
 namespace Rendering {
 
-public class MazeFactory : MonoBehaviour, IEventListener {
+public class MazeFactory : MonoBehaviour {
 	protected Maze mazeObject;
 
 	// Prefabs
 	public GameObject wallPrefab;
 	public GameObject chestPrefab;
 
-	public void CreateListeners() {
-		EventManager.Instance.AddListener<Gameplay.Events.MazeReady<Gameplay.DFSCell>>(CreateMaze);
-	}
-
-	void Awake() {
-		CreateListeners();
-	}
-
-	void CreateMaze(Gameplay.Events.MazeReady<Gameplay.DFSCell> e) {
+	public void CreateMaze(Gameplay.Maze<Gameplay.DFSCell> maze) {
 		mazeObject = new Maze(new GameObject("Labyrinth"));
-		Gameplay.Maze<Gameplay.DFSCell> maze = e.maze;
 		CreateFloor(maze);
 		
 		// Create walls in the diagonal part of the maze.

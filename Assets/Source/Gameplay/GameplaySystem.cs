@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay {
 
-public class GameplaySystem : MonoBehaviour {
+public class GameplaySystem : MonoBehaviour, IEventListener {
     static GameplaySystem s_Instance = null;
 
     DFSFactory mazeFactory;
@@ -14,7 +14,6 @@ public class GameplaySystem : MonoBehaviour {
     void Awake() {
         CreateListeners();
         s_Instance = null;
-        
     }
 
     public static GameplaySystem Instance {
