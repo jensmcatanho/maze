@@ -8,27 +8,27 @@ namespace Core {
 public class EventManager : MonoBehaviour {
     public bool LimitQueueProcesing = false;
     public float QueueProcessTime = 0.0f;
-    private static EventManager s_Instance = null;
-    private Queue m_eventQueue = new Queue();
+    static EventManager s_Instance = null;
+    Queue m_eventQueue = new Queue();
 
     public delegate void EventDelegate<T> (T e) where T : Events.GameEvent;
-    private delegate void EventDelegate (Events.GameEvent e);
+    delegate void EventDelegate (Events.GameEvent e);
 
-    private Dictionary<System.Type, EventDelegate> delegates = new Dictionary<System.Type, EventDelegate>();
-    private Dictionary<System.Delegate, EventDelegate> delegateLookup = new Dictionary<System.Delegate, EventDelegate>();
-    private Dictionary<System.Delegate, System.Delegate> onceLookups = new Dictionary<System.Delegate, System.Delegate>();
+    Dictionary<System.Type, EventDelegate> delegates = new Dictionary<System.Type, EventDelegate>();
+    Dictionary<System.Delegate, EventDelegate> delegateLookup = new Dictionary<System.Delegate, EventDelegate>();
+    Dictionary<System.Delegate, System.Delegate> onceLookups = new Dictionary<System.Delegate, System.Delegate>();
 
-    // override so we don't have the typecast the object
     public static EventManager Instance {
         get {
             if (s_Instance == null) {
                 s_Instance = GameObject.FindObjectOfType (typeof(EventManager)) as EventManager;
             }
+
             return s_Instance;
         }
     }
 
-    private EventDelegate AddDelegate<T>(EventDelegate<T> del) where T : Events.GameEvent {
+    EventDelegate AddDelegate<T>(EventDelegate<T> del) where T : Events.GameEvent {
         // Early-out if we've already registered this delegate
         if (delegateLookup.ContainsKey(del))
             return null;
@@ -55,8 +55,7 @@ public class EventManager : MonoBehaviour {
     public void AddListenerOnce<T> (EventDelegate<T> del) where T : Events.GameEvent {
         EventDelegate result = AddDelegate<T>(del);
 
-        if(result != null){
-            // remember this is only called once
+        if (result != null) {
             onceLookups[result] = del;
         }
     }
@@ -65,9 +64,11 @@ public class EventManager : MonoBehaviour {
         EventDelegate internalDelegate;
         if (delegateLookup.TryGetValue(del, out internalDelegate)) {
             EventDelegate tempDel;
-            if (delegates.TryGetValue(typeof(T), out tempDel)){
+
+            if (delegates.TryGetValue(typeof(T), out tempDel)) {
                 tempDel -= internalDelegate;
-                if (tempDel == null){
+
+                if (tempDel == null) {
                     delegates.Remove(typeof(T));
                 } else {
                     delegates[typeof(T)] = tempDel;
@@ -94,12 +95,11 @@ public class EventManager : MonoBehaviour {
             del.Invoke(e);
 
             // remove listeners which should only be called once
-            foreach(EventDelegate k in delegates[e.GetType()].GetInvocationList()){
-                if(onceLookups.ContainsKey(k)){
+            foreach (EventDelegate k in delegates[e.GetType()].GetInvocationList()) {
+                if (onceLookups.ContainsKey(k)) {
                     delegates[e.GetType()] -= k;
 
-                    if(delegates[e.GetType()] == null)
-                    {
+                    if (delegates[e.GetType()] == null) {
                         delegates.Remove(e.GetType());
                     }
 
@@ -107,6 +107,7 @@ public class EventManager : MonoBehaviour {
                     onceLookups.Remove(k);
                 }
             }
+            
         } else {
             Debug.LogWarning("Event: " + e.GetType() + " has no listeners");
         }
