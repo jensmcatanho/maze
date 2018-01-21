@@ -1,7 +1,7 @@
 ﻿namespace Gameplay {
 
 [System.Serializable]
-public class Maze<T> {
+public class Maze<T> where T : Cell {
 	int m_Length;
 	int m_Width;
 

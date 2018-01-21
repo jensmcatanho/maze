@@ -7,8 +7,18 @@ public class RenderingSystem : MonoBehaviour, Core.IEventListener {
 
     MazeFactory mazeFactory;
 
+    public static RenderingSystem Instance {
+        get {
+            if (s_Instance == null) {
+                s_Instance = GameObject.FindObjectOfType (typeof(RenderingSystem)) as RenderingSystem;
+            }
+            
+            return s_Instance;
+        }
+    }
+
     public void CreateListeners() {
-		Core.EventManager.Instance.AddListener<Gameplay.Events.MazeReady<Gameplay.DFSCell>>(CreateMaze);
+		Core.EventManager.Instance.AddListener<Gameplay.Events.MazeReady>(CreateMaze);
     }
 
     void Awake() {
@@ -16,20 +26,11 @@ public class RenderingSystem : MonoBehaviour, Core.IEventListener {
         s_Instance = null;   
     }
 
-    public static RenderingSystem Instance {
-        get {
-            if (s_Instance == null) {
-                s_Instance = GameObject.FindObjectOfType (typeof(RenderingSystem)) as RenderingSystem;
-            }
-            return s_Instance;
-        }
-    }
-
-    void CreateMaze(Gameplay.Events.MazeReady<Gameplay.DFSCell> e) {
+    void CreateMaze(Gameplay.Events.MazeReady e) {
 		mazeFactory = GameObject.Find("RenderingSystem").GetComponent<MazeFactory>();
-        mazeFactory.CreateMaze(e.maze);
+        mazeFactory.CreateMaze(e.m_Maze);
 #if UNITY_EDITOR
-        ASCIIFactory.Render(e.maze, "x");
+        ASCIIFactory.Render(e.m_Maze, "x");
 #endif
     }
 }
