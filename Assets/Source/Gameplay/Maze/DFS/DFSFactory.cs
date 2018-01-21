@@ -16,7 +16,15 @@ public class DFSFactory : MazeFactory {
 		CreatePath ();
 		CreateChests ();
 
-		Core.EventManager.Instance.QueueEvent(new Events.MazeReady<DFSCell>(maze));
+		Maze<Cell> m = new Maze<Cell>(length, width, cellSize);
+		m.Entrance = maze.Entrance;
+		m.Exit = maze.Exit;
+
+		for (int row = 0; row < m.Length; row++)
+			for (int col = 0; col < m.Width; col++)
+				m[row, col] = maze[row, col];     
+
+		Core.EventManager.Instance.QueueEvent(new Events.MazeReady(m));
 	}
 
 	protected override void CreatePath () {

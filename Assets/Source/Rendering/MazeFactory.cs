@@ -3,14 +3,15 @@
 namespace Rendering {
 
 public class MazeFactory : MonoBehaviour {
-	protected Maze mazeObject;
+	protected GameObject mazeObject;
 
 	// Prefabs
 	public GameObject wallPrefab;
 	public GameObject chestPrefab;
 
-	public void CreateMaze(Gameplay.Maze<Gameplay.DFSCell> maze) {
-		mazeObject = new Maze(new GameObject("Labyrinth"));
+	public void CreateMaze(Gameplay.Maze<Gameplay.Cell> maze) {
+		mazeObject = new GameObject("Labyrinth");
+		mazeObject.AddComponent<Maze>();
 		CreateFloor(maze);
 		
 		// Create walls in the diagonal part of the maze.
@@ -39,7 +40,7 @@ public class MazeFactory : MonoBehaviour {
 
 				if (maze[j, i].HasChest) {
 					CreateChest(maze, j, i);
-					mazeObject.NChests++;
+					mazeObject.GetComponent<Maze>().NChests++;
 				}
 				
 				// Create walls in the upper triangular part of the maze.
@@ -51,32 +52,32 @@ public class MazeFactory : MonoBehaviour {
 
 				if (maze[i, j].HasChest) {
 					CreateChest(maze, i, j);
-					mazeObject.NChests++;
+					mazeObject.GetComponent<Maze>().NChests++;
 				}
 			}
 		}
 
 		CreateFinish(maze);
-		Core.EventManager.Instance.QueueEvent(new Events.MazeReady(mazeObject));
+		Core.EventManager.Instance.QueueEvent(new Events.MazeReady(mazeObject.GetComponent<Maze>()));
 	}
 
-	void CreateFloor(Gameplay.Maze<Gameplay.DFSCell> maze) {
+	void CreateFloor(Gameplay.Maze<Gameplay.Cell> maze) {
 		GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
-		floor.transform.parent = mazeObject.m_Labyrinth.transform;
+		floor.transform.parent = mazeObject.transform;
 		floor.transform.localScale = new Vector3(maze.Length * 0.2f * maze.CellSize, 1, maze.Width * 0.2f * maze.CellSize);
 		floor.transform.position = new Vector3 (maze.Length * maze.CellSize, 0, maze.Width * maze.CellSize);
 	}
 
-	void CreateWall(Gameplay.Maze<Gameplay.DFSCell> maze, Vector3 position, Vector3 rotation) {
+	void CreateWall(Gameplay.Maze<Gameplay.Cell> maze, Vector3 position, Vector3 rotation) {
 		Quaternion r = Quaternion.identity;
 		r.eulerAngles = rotation;
 
 		GameObject wall = Instantiate(wallPrefab, position, r) as GameObject;
-		wall.transform.parent = mazeObject.m_Labyrinth.transform;
+		wall.transform.parent = mazeObject.transform;
 		wall.transform.localScale *= maze.CellSize;
 	}
 
-	void CreateChest(Gameplay.Maze<Gameplay.DFSCell> maze, int row, int col) {
+	void CreateChest(Gameplay.Maze<Gameplay.Cell> maze, int row, int col) {
 		Quaternion r = Quaternion.identity;
 		Vector3 chestPosition = new Vector3 ((2 * row + 1) * maze.CellSize, 0.0f, (2 * col + 1) * maze.CellSize);
 		Vector3 chestRotation = new Vector3();
@@ -103,14 +104,14 @@ public class MazeFactory : MonoBehaviour {
 
 		r.eulerAngles = chestRotation;
 		GameObject chest = Instantiate (chestPrefab, chestPosition, r);
-		chest.transform.parent = mazeObject.m_Labyrinth.transform;
+		chest.transform.parent = mazeObject.transform;
 	}
 
-	void CreateFinish(Gameplay.Maze<Gameplay.DFSCell> maze) {
+	void CreateFinish(Gameplay.Maze<Gameplay.Cell> maze) {
 		GameObject finishTrigger = new GameObject("FinishTrigger");
 		finishTrigger.AddComponent<FinishPoint>();
 		finishTrigger.AddComponent<BoxCollider>().isTrigger = true;
-		finishTrigger.transform.parent = mazeObject.m_Labyrinth.transform;
+		finishTrigger.transform.parent = mazeObject.transform;
 
 		if (maze.Exit.Position.x >= maze.Exit.Position.y) {
 			finishTrigger.transform.position = new Vector3 ((2 * maze.Exit.Position.x + 4) * maze.CellSize - 2 * maze.CellSize, 1.0f, (2 * maze.Exit.Position.y + 1) * maze.CellSize);
