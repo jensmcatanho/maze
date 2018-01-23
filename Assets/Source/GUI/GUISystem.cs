@@ -6,6 +6,12 @@ public class GUISystem : MonoBehaviour, Core.IEventListener {
     static GUISystem s_Instance = null;
 
     [SerializeField]
+    public GameObject m_MainMenu;
+
+    [SerializeField]
+    public GameObject m_LoadingScreen;
+
+    [SerializeField]
     public GameObject m_PauseMenuUI;
 
     public static GUISystem Instance {
@@ -19,21 +25,15 @@ public class GUISystem : MonoBehaviour, Core.IEventListener {
     }
 
     public void CreateListeners() {
-        Core.EventManager.Instance.AddListener<Events.DisplayPauseMenu>(DisplayPauseMenu);
-        Core.EventManager.Instance.AddListener<Events.ClosePauseMenu>(ClosePauseMenu);
+        Core.EventManager.Instance.AddListener<Core.Events.GameStarted>(GameStarted);
     }
 
     void Awake() {
         CreateListeners();
-        m_PauseMenuUI.SetActive(false);
     }
 
-    void DisplayPauseMenu(Events.DisplayPauseMenu e) {
-        m_PauseMenuUI.SetActive(true);
-    }
+    void GameStarted(Core.Events.GameStarted e) {
 
-    void ClosePauseMenu(Events.ClosePauseMenu e) {
-        m_PauseMenuUI.SetActive(false);
     }
 }
 

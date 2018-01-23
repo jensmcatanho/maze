@@ -2,10 +2,11 @@ using UnityEngine;
 
 namespace Input {
 
-public class InputSystem : MonoBehaviour {
+public class InputSystem : MonoBehaviour, Core.IEventListener {
     static InputSystem s_Instance = null;
 
     public static bool m_IsPaused;
+    public static bool m_IsInGame = false;
 
     public static InputSystem Instance {
         get {
@@ -17,14 +18,27 @@ public class InputSystem : MonoBehaviour {
         }
     }
 
+    public void CreateListeners() {
+        Core.EventManager.Instance.AddListener<Core.Events.GameStarted>(GameStarted);
+    }
+
+    void Awake() {
+        CreateListeners();
+    }
+
     void Update() {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape)) {
-            if (m_IsPaused) {
-                ResumeGame();
-            } else {
-                PauseGame();
-            }
+        if (m_IsInGame) {
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+                if (m_IsPaused) {
+                    ResumeGame();
+                } else {
+                    PauseGame();
+                }
         }
+    }
+
+    void GameStarted(Core.Events.GameStarted e) {
+        m_IsInGame = true;
     }
 
     void PauseGame() {

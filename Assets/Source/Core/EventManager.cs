@@ -27,7 +27,7 @@ public class EventManager : MonoBehaviour {
             return s_Instance;
         }
     }
-
+    
     EventDelegate AddDelegate<T>(EventDelegate<T> del) where T : Events.GameEvent {
         // Early-out if we've already registered this delegate
         if (delegateLookup.ContainsKey(del))

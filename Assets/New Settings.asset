@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2138550f0d139244cad0889730a7ce4a, type: 3}
+  m_Name: New Settings
+  m_EditorClassIdentifier: 
+  mazeLength: 10
+  mazeWidth: 10
+  cellSize: 2
+  mazeType: 0

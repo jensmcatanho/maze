@@ -23,7 +23,6 @@ public class RenderingSystem : MonoBehaviour, Core.IEventListener {
 
     void Awake() {
         CreateListeners();
-        s_Instance = null;   
     }
 
     void CreateMaze(Gameplay.Events.MazeReady e) {
