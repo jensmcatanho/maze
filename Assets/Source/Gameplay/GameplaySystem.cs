@@ -19,8 +19,8 @@ public class GameplaySystem : MonoBehaviour, Core.IEventListener {
 
     public void CreateListeners() {
 		Core.EventManager.Instance.AddListener<Core.Events.CreateNewMaze>(CreateMaze);
-        Core.EventManager.Instance.AddListener<Events.PauseGame>(PauseGame);
-        Core.EventManager.Instance.AddListener<Events.ResumeGame>(ResumeGame);
+        Core.EventManager.Instance.AddListener<Input.Events.PauseGame>(PauseGame);
+        Core.EventManager.Instance.AddListener<Input.Events.ResumeGame>(ResumeGame);
     }
 
     void Awake() {
@@ -40,12 +40,12 @@ public class GameplaySystem : MonoBehaviour, Core.IEventListener {
         }
     }
 
-    public void PauseGame(Events.PauseGame e) {
+    public void PauseGame(Input.Events.PauseGame e) {
         Time.timeScale = 0.0f;
         m_IsPaused = true;
     }
     
-    public void ResumeGame(Events.ResumeGame e) {
+    public void ResumeGame(Input.Events.ResumeGame e) {
         Time.timeScale = 1.0f;
         m_IsPaused = false;
     }

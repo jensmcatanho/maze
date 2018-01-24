@@ -1,4 +1,4 @@
-namespace Gameplay {
+namespace Input {
 
 namespace Events {
 

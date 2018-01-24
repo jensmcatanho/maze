@@ -42,14 +42,12 @@ public class InputSystem : MonoBehaviour, Core.IEventListener {
     }
 
     void PauseGame() {
-        Core.EventManager.Instance.QueueEvent(new Gameplay.Events.PauseGame());
-        Core.EventManager.Instance.QueueEvent(new GUI.Events.DisplayPauseMenu());
+        Core.EventManager.Instance.QueueEvent(new Events.PauseGame());
         m_IsPaused = true;
     }
 
     void ResumeGame() {
-        Core.EventManager.Instance.QueueEvent(new Gameplay.Events.ResumeGame());
-        Core.EventManager.Instance.QueueEvent(new GUI.Events.ClosePauseMenu());
+        Core.EventManager.Instance.QueueEvent(new Events.ResumeGame());
         m_IsPaused = false;
     }
 }

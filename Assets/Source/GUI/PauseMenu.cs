@@ -5,8 +5,8 @@ namespace GUI {
 
 public class PauseMenu : MonoBehaviour, Core.IEventListener {
     public void CreateListeners() {
-        Core.EventManager.Instance.AddListener<Events.DisplayPauseMenu>(DisplayPauseMenu);
-        Core.EventManager.Instance.AddListener<Events.ClosePauseMenu>(ClosePauseMenu);
+        Core.EventManager.Instance.AddListener<Input.Events.PauseGame>(DisplayPauseMenu);
+        Core.EventManager.Instance.AddListener<Input.Events.ResumeGame>(ClosePauseMenu);
     }
 
     void Awake() {
@@ -14,11 +14,11 @@ public class PauseMenu : MonoBehaviour, Core.IEventListener {
         gameObject.SetActive(false);
     }
 
-    void DisplayPauseMenu(Events.DisplayPauseMenu e) {
+    void DisplayPauseMenu(Input.Events.PauseGame e) {
         gameObject.SetActive(true);
     }
 
-    void ClosePauseMenu(Events.ClosePauseMenu e) {
+    void ClosePauseMenu(Input.Events.ResumeGame e) {
         gameObject.SetActive(false);
     }
 }

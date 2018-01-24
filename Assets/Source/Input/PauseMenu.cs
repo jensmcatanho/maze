@@ -4,8 +4,7 @@ namespace Input {
 
 public class PauseMenu : MonoBehaviour {
     public void ResumeButton() {
-        Core.EventManager.Instance.QueueEvent(new Gameplay.Events.ResumeGame());
-        Core.EventManager.Instance.QueueEvent(new GUI.Events.ClosePauseMenu());
+        Core.EventManager.Instance.QueueEvent(new Events.ResumeGame());
         InputSystem.m_IsPaused = false;
     }
 
