@@ -4,11 +4,12 @@ namespace Input {
 
 public class PauseMenu : MonoBehaviour {
     public void ResumeButton() {
-        Core.EventManager.Instance.QueueEvent(new Events.ResumeGame());
-        InputSystem.m_IsPaused = false;
+        InputSystem.Instance.ResumeGame();
     }
 
     public void MenuButton() {
+        InputSystem.Instance.ResumeGame();
+        Core.EventManager.Instance.QueueEvent(new Events.LoadMainMenu());
         Debug.Log("Loading main menu...");
     }
 

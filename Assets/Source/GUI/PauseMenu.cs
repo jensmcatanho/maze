@@ -15,10 +15,12 @@ public class PauseMenu : MonoBehaviour, Core.IEventListener {
     }
 
     void DisplayPauseMenu(Input.Events.PauseGame e) {
+        Cursor.visible = true;
         gameObject.SetActive(true);
     }
 
     void ClosePauseMenu(Input.Events.ResumeGame e) {
+        Cursor.visible = false;
         gameObject.SetActive(false);
     }
 }

@@ -9,7 +9,9 @@ public enum MazeType {
 	Prim
 }
 
-public class MainSystem : MonoBehaviour, IEventListener {
+public class MainSystem : Singleton<MainSystem>, IEventListener {
+	static MainSystem _instance;
+
 	[SerializeField]
 	GameObject player;
 
@@ -19,12 +21,25 @@ public class MainSystem : MonoBehaviour, IEventListener {
 	public void CreateListeners() {
 		EventManager.Instance.AddListener<Rendering.Events.MazeReady>(CreatePlayer);
         EventManager.Instance.AddListener<Input.Events.LoadGame>(LoadGame);
+        EventManager.Instance.AddListener<Input.Events.LoadMainMenu>(LoadMainMenu);
+	}
+
+	protected MainSystem() {
+
 	}
 
 	void Awake() {
 		CreateListeners();
     	DontDestroyOnLoad(transform.gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+		// TODO: Make this a singleton parent class.
+        if (_instance == null) {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        } else {
+            DestroyImmediate(gameObject);
+        }
 	}
 
 	void CreatePlayer(Rendering.Events.MazeReady e) {
@@ -36,6 +51,10 @@ public class MainSystem : MonoBehaviour, IEventListener {
 	void LoadGame(Input.Events.LoadGame e) {
 		gameplaySettings = e.gameSettings;
 		StartCoroutine(LoadGameAsync(1));
+	}
+
+	void LoadMainMenu(Input.Events.LoadMainMenu e) {
+		SceneManager.LoadScene(0);
 	}
 
 	IEnumerator LoadGameAsync(int sceneIndex) {
@@ -50,9 +69,13 @@ public class MainSystem : MonoBehaviour, IEventListener {
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+		SceneManager.SetActiveScene(scene);
+
 		if (scene.buildIndex == 1) {
-			SceneManager.SetActiveScene(scene);
 			EventManager.Instance.QueueEvent(new Events.CreateNewMaze(gameplaySettings));
+		} else if (scene.buildIndex == 0) {
+			Debug.Log("Menu");
+        	Cursor.visible = true;
 		}
 	}
 }
