@@ -27,7 +27,7 @@ public class EventManager : MonoBehaviour {
             return s_Instance;
         }
     }
-
+    
     EventDelegate AddDelegate<T>(EventDelegate<T> del) where T : Events.GameEvent {
         // Early-out if we've already registered this delegate
         if (delegateLookup.ContainsKey(del))
@@ -91,8 +91,16 @@ public class EventManager : MonoBehaviour {
 
     public void TriggerEvent (Events.GameEvent e) {
         EventDelegate del;
+
+#if UNITY_EDITOR
+        Debug.Log("Event " + e.ToString() + " triggered.");
+#endif
+
         if (delegates.TryGetValue(e.GetType(), out del)) {
             del.Invoke(e);
+#if UNITY_EDITOR
+        Debug.Log("Listener " + del.Target.ToString().Split('[', ']')[1] + " invoked.");
+#endif
 
             // remove listeners which should only be called once
             foreach (EventDelegate k in delegates[e.GetType()].GetInvocationList()) {
