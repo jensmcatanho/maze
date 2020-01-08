@@ -9,9 +9,6 @@ public class GUISystem : MonoBehaviour, Core.IEventListener {
     public GameObject m_MainMenu;
 
     [SerializeField]
-    public GameObject m_LoadingScreen;
-
-    [SerializeField]
     public GameObject m_PauseMenuUI;
 
     public static GUISystem Instance {

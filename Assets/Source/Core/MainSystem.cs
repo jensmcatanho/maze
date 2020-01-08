@@ -45,27 +45,16 @@ public class MainSystem : Singleton<MainSystem>, IEventListener {
 	void CreatePlayer(Rendering.Events.MazeReady e) {
 		Instantiate (player, new Vector3 (1.0f * gameplaySettings.cellSize, 1.0f, 1.0f * gameplaySettings.cellSize), new Quaternion());
 		EventManager.Instance.QueueEvent(new Events.GameStarted());
-		SceneManager.UnloadSceneAsync(0);
 	}
 
 	void LoadGame(Input.Events.LoadGame e) {
 		gameplaySettings = e.gameSettings;
-		StartCoroutine(LoadGameAsync(1));
+		SceneManager.LoadScene(1);
+		//StartCoroutine(LoadGameAsync(1));
 	}
 
 	void LoadMainMenu(Input.Events.LoadMainMenu e) {
 		SceneManager.LoadScene(0);
-	}
-
-	IEnumerator LoadGameAsync(int sceneIndex) {
-		AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
-
-		while (!operation.isDone) {
-			float progress = Mathf.Clamp01(operation.progress / .9f);
-			EventManager.Instance.QueueEvent(new Events.LoadingProgress(progress));
-
-			yield return null;
-		}
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
