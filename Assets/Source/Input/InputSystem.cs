@@ -5,7 +5,7 @@ namespace Input {
 public class InputSystem : MonoBehaviour, Core.IEventListener {
     static InputSystem s_Instance = null;
 
-    public static bool m_IsPaused;
+    public static bool m_IsPaused = false;
     public static bool m_IsInGame = false;
 
     public static InputSystem Instance {

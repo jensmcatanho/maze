@@ -50,7 +50,6 @@ public class MainSystem : Singleton<MainSystem>, IEventListener {
 	void LoadGame(Input.Events.LoadGame e) {
 		gameplaySettings = e.gameSettings;
 		SceneManager.LoadScene(1);
-		//StartCoroutine(LoadGameAsync(1));
 	}
 
 	void LoadMainMenu(Input.Events.LoadMainMenu e) {
