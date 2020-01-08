@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Core {
 
 namespace Events {
@@ -12,6 +14,7 @@ public class CreateNewMaze : GameEvent {
 	public int cellSize  { get; private set; }
 
     public CreateNewMaze(GameplaySettings gpSettings) {
+        Debug.Log("Event :: CreateNewMaze");
         mazeType = gpSettings.mazeType;
         mazeLength = gpSettings.mazeLength;
         mazeWidth = gpSettings.mazeWidth;
