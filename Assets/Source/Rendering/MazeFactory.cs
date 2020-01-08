@@ -9,7 +9,22 @@ public class MazeFactory : MonoBehaviour {
 	public GameObject wallPrefab;
 	public GameObject chestPrefab;
 
-	public void CreateMaze(Gameplay.Maze<Gameplay.Cell> maze) {
+	public void CreateListeners() {
+		Core.EventManager.Instance.AddListener<Gameplay.Events.MazeReady>(RenderMaze);
+    }
+
+    void Awake() {
+        CreateListeners();
+    }
+
+	public void RenderMaze(Gameplay.Events.MazeReady e) {
+		CreateMaze(e.m_Maze);
+#if UNITY_EDITOR
+        ASCIIFactory.Render(e.m_Maze, "x");
+#endif
+	}
+
+	void CreateMaze(Gameplay.Maze<Gameplay.Cell> maze) {
 		mazeObject = new GameObject("Labyrinth");
 		mazeObject.AddComponent<Maze>();
 		CreateFloor(maze);
@@ -59,6 +74,7 @@ public class MazeFactory : MonoBehaviour {
 
 		CreateFinish(maze);
 		Core.EventManager.Instance.QueueEvent(new Events.MazeRendered(mazeObject.GetComponent<Maze>()));
+		GameObject.Destroy(gameObject);
 	}
 
 	void CreateFloor(Gameplay.Maze<Gameplay.Cell> maze) {
