@@ -19,7 +19,7 @@ public class MainSystem : Singleton<MainSystem>, IEventListener {
 	GameplaySettings gameplaySettings;
 
 	public void CreateListeners() {
-		EventManager.Instance.AddListener<Rendering.Events.MazeReady>(CreatePlayer);
+		EventManager.Instance.AddListener<Rendering.Events.MazeRendered>(CreatePlayer);
         EventManager.Instance.AddListener<Input.Events.LoadGame>(LoadGame);
         EventManager.Instance.AddListener<Input.Events.LoadMainMenu>(LoadMainMenu);
 	}
@@ -42,7 +42,7 @@ public class MainSystem : Singleton<MainSystem>, IEventListener {
         }
 	}
 
-	void CreatePlayer(Rendering.Events.MazeReady e) {
+	void CreatePlayer(Rendering.Events.MazeRendered e) {
 		Instantiate (player, new Vector3 (1.0f * gameplaySettings.cellSize, 1.0f, 1.0f * gameplaySettings.cellSize), new Quaternion());
 		EventManager.Instance.QueueEvent(new Events.GameStarted());
 	}

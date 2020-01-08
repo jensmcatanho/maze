@@ -58,7 +58,7 @@ public class MazeFactory : MonoBehaviour {
 		}
 
 		CreateFinish(maze);
-		Core.EventManager.Instance.QueueEvent(new Events.MazeReady(mazeObject.GetComponent<Maze>()));
+		Core.EventManager.Instance.QueueEvent(new Events.MazeRendered(mazeObject.GetComponent<Maze>()));
 	}
 
 	void CreateFloor(Gameplay.Maze<Gameplay.Cell> maze) {
@@ -122,6 +122,19 @@ public class MazeFactory : MonoBehaviour {
 			finishTrigger.transform.localScale = new Vector3(1.5f * maze.CellSize, 2.0f * maze.CellSize, maze.CellSize * 0.5f);
 		}
 	}
+}
+
+namespace Events {
+	public class MazeRendered : Core.Events.GameEvent {
+    public Maze maze {
+		get;
+		private set;
+	}
+
+    public MazeRendered(Maze m) {
+        maze = m;
+    }
+}
 }
 
 }
