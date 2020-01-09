@@ -6,19 +6,19 @@ namespace GUI {
 public class MainMenu : MonoBehaviour, Core.IEventListener {
 
     public void CreateListeners() {
-        Core.EventManager.Instance.AddListener<Input.Events.LoadGame>(LoadGame);
-        Core.EventManager.Instance.AddListener<Input.Events.LoadMainMenu>(LoadMainMenu);
+        Core.EventManager.Instance.AddListener<Input.Events.PlayButtonPressed>(HideMenu);
+        Core.EventManager.Instance.AddListener<Input.Events.MenuButtonPressed>(DisplayMenu);
     }
 
     void Awake() {
         CreateListeners();
     }
 
-    void LoadGame(Input.Events.LoadGame e) {
-        gameObject.SetActive(false);
+    void HideMenu(Input.Events.PlayButtonPressed e) {
+        Cursor.visible = false;
     }
 
-    void LoadMainMenu(Input.Events.LoadMainMenu e) {
+    void DisplayMenu(Input.Events.MenuButtonPressed e) {
         Cursor.visible = true;
     }
 }

@@ -1,27 +1,23 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GUI {
 
 public class PauseMenu : MonoBehaviour, Core.IEventListener {
     public void CreateListeners() {
-        Core.EventManager.Instance.AddListener<Input.Events.PauseGame>(DisplayPauseMenu);
-        Core.EventManager.Instance.AddListener<Input.Events.ResumeGame>(ClosePauseMenu);
+        Core.EventManager.Instance.AddListener<Input.Events.PauseButtonPressed>(DisplayCursor);
+        Core.EventManager.Instance.AddListener<Input.Events.ResumeGameButtonPressed>(HideCursor);
     }
 
     void Awake() {
         CreateListeners();
-        gameObject.SetActive(false);
     }
 
-    public void DisplayPauseMenu(Input.Events.PauseGame e) {
+    public void DisplayCursor(Input.Events.PauseButtonPressed e) {
         Cursor.visible = true;
-        gameObject.SetActive(true);
     }
 
-    public void ClosePauseMenu(Input.Events.ResumeGame e) {
+    public void HideCursor(Input.Events.ResumeGameButtonPressed e) {
         Cursor.visible = false;
-        gameObject.SetActive(false);
     }
 }
 

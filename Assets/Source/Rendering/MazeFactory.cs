@@ -10,14 +10,14 @@ public class MazeFactory : MonoBehaviour {
 	public GameObject chestPrefab;
 
 	public void CreateListeners() {
-		Core.EventManager.Instance.AddListener<Gameplay.Events.MazeReady>(RenderMaze);
+		Core.EventManager.Instance.AddListener<Gameplay.Events.MazeGenerated>(RenderMaze);
     }
 
     void Awake() {
         CreateListeners();
     }
 
-	public void RenderMaze(Gameplay.Events.MazeReady e) {
+	public void RenderMaze(Gameplay.Events.MazeGenerated e) {
 		CreateMaze(e.m_Maze);
 #if UNITY_EDITOR
         ASCIIFactory.Render(e.m_Maze, "x");

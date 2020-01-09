@@ -24,7 +24,7 @@ public class DFSFactory : MazeFactory {
 			for (int col = 0; col < m.Width; col++)
 				m[row, col] = maze[row, col];     
 
-		Core.EventManager.Instance.QueueEvent(new Events.MazeReady(m));
+		Core.EventManager.Instance.QueueEvent(new Events.MazeGenerated(m));
 	}
 
 	protected override void CreatePath () {
